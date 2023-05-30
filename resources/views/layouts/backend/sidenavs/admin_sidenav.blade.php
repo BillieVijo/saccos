@@ -23,5 +23,10 @@
     </nav>
 </div>
 
+<a class="nav-link collapsed" href="{{route('log.index')}}"  aria-expanded="false" aria-controls="collapseLayouts">
+    <div class="sb-nav-link-icon"><i class="fa-solid fa-logs"></i></div>
+    Logs
+</a>
+
 
 

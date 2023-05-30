@@ -55,4 +55,8 @@ class User extends Authenticatable
     public function members(){
         return $this->hasMany(\App\Models\Member::class,'user_id');
     }
+
+    public function auditTrails(){
+        return $this->hasMany(AuditTrails::class);
+    }
 }

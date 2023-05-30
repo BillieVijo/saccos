@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Deposit;
 use App\Models\Member;
+use App\Models\AuditTrail;
 use Illuminate\Http\Request;
 
 class DepositController extends Controller
@@ -65,6 +66,11 @@ class DepositController extends Controller
                 'balance_amount'=> $member->balance_amount + $request->amount,
             ]);
         }
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Make Deposit of '.$request->amount.' TSH',
+        ]);
 
         return redirect(route('deposit.index'));
     }

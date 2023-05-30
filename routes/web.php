@@ -7,6 +7,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\AuditTrailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/loan', LoanController::class);
     Route::resource('/deposit', DepositController::class);
     Route::resource('/share', ShareController::class);
+    Route::resource('/log', AuditTrailController::class);
 });
 
 require __DIR__.'/auth.php';
