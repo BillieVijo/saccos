@@ -16,8 +16,20 @@ class DepositController extends Controller
      */
     public function index()
     {
-        $deposits = Deposit::where('member_id',auth()->user()->id)->get();
+        $deposits = Deposit::get();
         return view('backend.deposit.index',compact('deposits'));
+    }
+
+    public function showDepositMade()
+    {
+        $deposits = Deposit::where('status', 'REQUESTED')->get();
+        return view('backend.deposit.requested', compact('deposits'));
+    }
+
+    public function showMyDeposits()
+    {
+        $deposits = Deposit::where('member_id', auth()->user()->id)->get();
+        return view('backend.deposit.my_deposits', compact('deposits'));
     }
 
     /**
@@ -48,28 +60,14 @@ class DepositController extends Controller
         $deposit = Deposit::create([
             'amount' => $request->amount,
             'member_id' => auth()->user()->id,
-            'status' => 'SAVED'
+            'status' => 'REQUESTED'
         ]);
 
-        //escape negative number
-        $x = 0;
-        if($member->loan_amount - $request->amount < 0){
-            $x = 0;
-        }else{
-            $x = $member->loan_amount - $request->amount;
-        }
-
-        if($deposit){
-            $member->update([
-                'loan_amount'=> $x,
-                'deposit_amount'=> $member->deposit_amount + $request->amount,
-                'balance_amount'=> $member->balance_amount + $request->amount,
-            ]);
-        }
+        
 
         AuditTrail::create([
             'user_id' => auth()->user()->id,
-            'action' => 'Make Deposit of '.$request->amount.' TSH',
+            'action' => 'Make Deposit request of '.$request->amount.' TSH',
         ]);
 
         return redirect(route('deposit.index'));
@@ -106,7 +104,16 @@ class DepositController extends Controller
      */
     public function update(Request $request, Deposit $deposit)
     {
-        //
+        $deposit->update([
+            'status' => 'APPROVED',
+        ]);
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Approve Deposit of '.$deposit->amount.' TSH',
+        ]);
+
+        return redirect(route('deposit.made'));
     }
 
     /**

@@ -23,7 +23,7 @@
 <div class="collapse" id="deposit" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{route('deposit.create')}}"><i class="fas fa-plus"> </i> Make Deposit</a>
-        <a class="nav-link" href="{{route('deposit.index')}}"><i class="fas fa-columns"> </i> My Deposits</a>
+        <a class="nav-link" href="{{route('deposit.myDeposits')}}"><i class="fas fa-columns"> </i> My Deposits</a>
     </nav>
 </div>
 

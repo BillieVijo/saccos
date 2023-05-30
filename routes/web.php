@@ -42,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::get('loans/requested', [LoanController::class, 'showRequested'])->name('loan.requested');
     Route::get('loans/my-loans', [LoanController::class, 'showMyLoans'])->name('loan.myLoans');
     Route::resource('/deposit', DepositController::class);
+    // Additional routes for specific deposits
+    Route::get('deposits/made', [DepositController::class, 'showDepositMade'])->name('deposit.made');
+    Route::get('deposits/my-deposits', [DepositController::class, 'showMyDeposits'])->name('deposit.myDeposits');
     Route::resource('/share', ShareController::class);
     Route::resource('/log', AuditTrailController::class);
 });
