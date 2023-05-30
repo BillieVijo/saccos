@@ -59,4 +59,12 @@ class User extends Authenticatable
     public function auditTrails(){
         return $this->hasMany(AuditTrails::class);
     }
+
+    public function loans(){
+        return $this->hasMany(Loan::class);
+    }
+
+    public function deposits(){
+        return $this->hasMany(Loan::class);
+    }
 }

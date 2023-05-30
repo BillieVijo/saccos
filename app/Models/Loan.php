@@ -15,4 +15,9 @@ class Loan extends Model
         'approval',
         'status',
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'member_id');
+    }
 }

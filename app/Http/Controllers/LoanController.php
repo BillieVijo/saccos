@@ -17,7 +17,7 @@ class LoanController extends Controller
     public function index()
     {
         $loans = Loan::get();
-        return view('backend.loan.my_loans',compact('loans'));
+        return view('backend.loan.index',compact('loans'));
     }
 
     public function showRequested()

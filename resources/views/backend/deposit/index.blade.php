@@ -12,13 +12,14 @@
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
                 Deposits
-                <a href="{{route('deposit.create')}}" class="btn btn-success btn-sm float-end"><i class="fas fa-plus"></i> Add Deposit</a>
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Name</th>
+                            <th>Member #</th>
                             <th>Amount</th>
                             <th>Status</th>
                             <th>Saving Date</th>
@@ -29,6 +30,8 @@
                         @foreach ($deposits as $deposit)
                         <tr>
                             <td>{{$loop->iteration}}</td>
+                            <td>{{$deposit->users->first_name .' '.$deposit->users->last_name}}</td>
+                            <td>{{$deposit->users->username}}</td>
                             <td>{{$deposit->amount}}</td>
                             <td>{{$deposit->status}}</td>
                             <td>{{$deposit->created_at}}</td>

@@ -19,6 +19,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Name</th>
+                            <th>Member #</th>
                             <th>Amount</th>
                             <th>Status</th>
                             <th>Date</th>
@@ -30,6 +32,8 @@
                         @foreach ($deposits as $deposit)
                         <tr>
                             <td>{{$loop->iteration}}</td>
+                            <td>{{$deposit->users->first_name .' '.$deposit->users->last_name}}</td>
+                            <td>{{$deposit->users->username}}</td>
                             <td>{{$deposit->amount}}</td>
                             <td>{{$deposit->status}}</td>
                             <td>{{$deposit->created_at}}</td>
