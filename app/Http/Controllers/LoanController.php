@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\Member;
 use App\Models\AuditTrail;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreLoanRequest;
 
 class LoanController extends Controller
 {
@@ -45,40 +46,18 @@ class LoanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreLoanRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreLoanRequest $request)
     {
-        
-        $this->validate($request, [
-            'amount' => 'required', 
+        // I used StoreLoanRequest to separate validation and simplify thib block of code
+        Loan::create([
+            'amount' => $request->amount,
+            'member_id' => auth()->user()->id,
+            'status' => 'REQUESTED'
         ]);
-
-        //check if the member ana balance ya bond
-        $member = Member::where('user_id', auth()->user()->id)->first();
-
-        // return $member->balance_amount;
-                       
-        if($member->balance_amount == 0.00){
-            return redirect()->back()->withErrors(['errors'=>'Your balance does not suppport your Loan Request'])->withInput();
-        }elseif($member->balance_amount < $request->amount){
-            return redirect()->back()->withErrors(['errors'=>'You cannot Loan Amount more than your balance'])->withInput();
-        }else{
-            $loan = Loan::create([
-                'amount' => $request->amount,
-                'member_id' => auth()->user()->id,
-                'status' => 'REQUESTED'
-            ]);
-
-            if($loan){
-                $member->update([
-                    'loan_amount'=> $member->loan_amount + $request->amount,
-                    'balance_amount'=> $member->balance_amount - $request->amount,
-                ]);
-            }
-        }
-
+        
         AuditTrail::create([
             'user_id' => auth()->user()->id,
             'action' => 'Request Loan of '.$request->amount.' TSH',
@@ -121,6 +100,18 @@ class LoanController extends Controller
         $loan->update([
             'status' => 'APPROVED',
         ]);
+        
+        // Retrieve the member associated with the loan
+        $member = Member::where('user_id',$loan->member_id)->first();
+        
+        // Update the member's loan and balance amounts
+        if ($member) {
+            $member->update([
+                'loan_amount' => $member->loan_amount + $loan->amount,
+                'balance_amount' => $member->balance_amount - $loan->amount,
+                'frozen_amount' => $member->frozen_amount + $loan->amount
+            ]);
+        }
 
         AuditTrail::create([
             'user_id' => auth()->user()->id,
