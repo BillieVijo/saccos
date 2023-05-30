@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/user', UserController::class);
     Route::resource('/member', MemberController::class);
     Route::resource('/loan', LoanController::class);
+    // Additional routes for specific loan
+    Route::get('loans/requested', [LoanController::class, 'showRequested'])->name('loan.requested');
+    Route::get('loans/my-loans', [LoanController::class, 'showMyLoans'])->name('loan.myLoans');
     Route::resource('/deposit', DepositController::class);
     Route::resource('/share', ShareController::class);
     Route::resource('/log', AuditTrailController::class);

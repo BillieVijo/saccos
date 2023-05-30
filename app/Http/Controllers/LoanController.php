@@ -16,8 +16,20 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = Loan::where('member_id',auth()->user()->id)->get();
-        return view('backend.loan.index',compact('loans'));
+        $loans = Loan::get();
+        return view('backend.loan.my_loans',compact('loans'));
+    }
+
+    public function showRequested()
+    {
+        $loans = Loan::where('status', 'REQUESTED')->get();
+        return view('backend.loan.requested', compact('loans'));
+    }
+
+    public function showMyLoans()
+    {
+        $loans = Loan::where('member_id', auth()->user()->id)->get();
+        return view('backend.loan.my_loans', compact('loans'));
     }
 
     /**
@@ -56,7 +68,7 @@ class LoanController extends Controller
             $loan = Loan::create([
                 'amount' => $request->amount,
                 'member_id' => auth()->user()->id,
-                'status' => 'APPROVED'
+                'status' => 'REQUESTED'
             ]);
 
             if($loan){
@@ -106,7 +118,16 @@ class LoanController extends Controller
      */
     public function update(Request $request, Loan $loan)
     {
-        //
+        $loan->update([
+            'status' => 'APPROVED',
+        ]);
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Approve loan of '.$loan->amount.' TSH',
+        ]);
+
+        return redirect(route('loan.requested'));
     }
 
     /**

@@ -11,7 +11,7 @@
 <div class="collapse" id="role" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{route('loan.create')}}"><i class="fas fa-plus"> </i> Request Loan</a>
-        <a class="nav-link" href="{{route('loan.index')}}"><i class="fas fa-columns"> </i> My Loans</a>
+        <a class="nav-link" href="{{route('loan.myLoans')}}"><i class="fas fa-columns"> </i> My Loans</a>
     </nav>
 </div>
 
