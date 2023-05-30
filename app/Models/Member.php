@@ -18,6 +18,7 @@ class Member extends Model
         'loan_amount',
         'deposit_amount',
         'balance_amount',
+        'frozen_amount',
     ];
 
     public function users()
