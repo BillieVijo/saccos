@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\CheckCollateral;
+use App\Rules\CheckOnProgressloan;
 
 class StoreLoanRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class StoreLoanRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => ['required', 'min:1000', 'numeric', new CheckCollateral],
+            'amount' => ['required', 'min:1000', 'numeric', new CheckCollateral, new CheckOnProgressLoan],
         ];
     }
 
