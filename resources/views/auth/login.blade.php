@@ -4,7 +4,9 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
+        @if (\Session::has('ban'))
+            <b style="color:red;">{{\Session::get('ban')}}</b>
+        @endif
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Username or Email')" />

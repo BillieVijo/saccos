@@ -26,6 +26,7 @@ class User extends Authenticatable
         'last_name',
         'username',
         'role_id',
+        'ban',
     ];
 
     /**

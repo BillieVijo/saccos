@@ -51,6 +51,17 @@
                                         </a>
                                         
                                     </div>
+                                    @if (auth()->user()->roles->id == 1)
+                                    <div class="col-3">
+                                        <form action="{{route('member.update',$member->id)}}" method="POST">
+                                            @csrf
+                                            @method('patch')
+                                            <button class="btn {{$member->users->ban ? 'btn-success' : 'btn-danger'}} btn-sm" onclick="return confirm('are you sure you want to {{$member->users->ban ? 'Un':''}}Ban this Member?');">
+                                                <i class="fa {{$member->users->ban ? 'fa-unlock' : 'fa-lock'}}"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    @else
                                     <div class="col-3">
                                         <form action="{{route('member.destroy',$member->id)}}" method="POST">
                                             @csrf
@@ -60,6 +71,7 @@
                                             </button>
                                         </form>
                                     </div>
+                                    @endif
                                 </div>
                             </td>                            
                         </tr>   

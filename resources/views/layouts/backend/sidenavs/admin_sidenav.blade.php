@@ -23,6 +23,11 @@
     </nav>
 </div>
 
+<a class="nav-link collapsed" href="{{route('member.index')}}"  aria-expanded="false" aria-controls="collapseLayouts">
+    <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
+    Members
+</a>
+
 <a class="nav-link collapsed" href="{{route('log.index')}}"  aria-expanded="false" aria-controls="collapseLayouts">
     <div class="sb-nav-link-icon"><i class="fa-solid fa-cogs"></i></div>
     Logs
