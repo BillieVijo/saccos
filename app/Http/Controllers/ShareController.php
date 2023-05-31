@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Share;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreShareRequest;
+use App\Models\AuditTrail;
 
 class ShareController extends Controller
 {
@@ -15,8 +17,20 @@ class ShareController extends Controller
      */
     public function index()
     {
-        $shares = Share::where('member_id',auth()->user()->id)->get();
+        $shares = Share::get();
         return view('backend.share.index',compact('shares'));
+    }
+
+    public function showShareMade()
+    {
+        $shares = Share::where('status', 'ON-PROGRESS')->get();
+        return view('backend.share.requested', compact('shares'));
+    }
+
+    public function showMyShares()
+    {
+        $shares = Share::where('member_id', auth()->user()->id)->get();
+        return view('backend.share.my_shares', compact('shares'));
     }
 
     /**
@@ -32,29 +46,21 @@ class ShareController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreShareRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreShareRequest $request)
     {
-        $this->validate($request, [
-            'amount' => 'required', 
-        ]);
-        //check the member 
-        $member = Member::where('user_id', auth()->user()->id)->first();
-
         $deposit = Share::create([
             'amount' => $request->amount,
             'member_id' => auth()->user()->id,
-            'status' => 'SAVED'
+            'status' => 'ON-PROGRESS'
         ]);
 
-
-        if($deposit){
-            $member->update([
-                'share'=> $request->amount
-            ]);
-        }
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Make Share Buy request of '.$request->amount.' Share(s)',
+        ]);
 
         return redirect(route('share.index'));
     }
@@ -90,7 +96,26 @@ class ShareController extends Controller
      */
     public function update(Request $request, Share $share)
     {
-        //
+        $share->update([
+            'status' => 'APPROVED',
+        ]);
+
+        // Retrieve the member associated with the share
+        $member = Member::where('user_id',$share->member_id)->first();
+
+        // Unfreeze the deposit amount by and add balance 
+        if ($member) {
+            $member->update([
+                'share' => $member->share - $share->amount,
+            ]);
+        }
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Approve Share of '.$share->amount,
+        ]);
+
+        return redirect(route('share.made'));
     }
 
     /**

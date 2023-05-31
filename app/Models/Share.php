@@ -14,4 +14,9 @@ class Share extends Model
         'member_id',
         'status',
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'member_id');
+    }
 }

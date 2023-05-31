@@ -15,6 +15,12 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            {{$error}}
+                            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endforeach
                     <div class="col-lg-6">
                         <form role="form" action="{{route('share.store')}}" method="POST">
                             @csrf

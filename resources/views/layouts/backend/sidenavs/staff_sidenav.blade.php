@@ -33,3 +33,15 @@
     </nav>
 </div>
 
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#share" aria-expanded="false" aria-controls="collapseLayouts">
+    <div class="sb-nav-link-icon"><i class="fas fa-dollar"></i></div>
+    Shares
+    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+</a>
+<div class="collapse" id="share" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{route('share.made')}}"><i class="fas fa-dollar"> </i> Shares Made</a>
+        <a class="nav-link" href="{{route('share.index')}}"><i class="fas fa-columns"> </i> All Shares</a>
+    </nav>
+</div>
+

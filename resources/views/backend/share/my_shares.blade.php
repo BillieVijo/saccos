@@ -12,6 +12,7 @@
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
                 Shares
+                <a href="{{route('share.create')}}" class="btn btn-success btn-sm float-end"><i class="fas fa-plus"></i> Add Share</a>
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
@@ -22,7 +23,8 @@
                             <th>Member #</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th>Saving Date</th>
+                            <th>Date</th>
+                            {{-- <th>Action</th> --}}
                         </tr>
                     </thead>
                     

@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::get('deposits/made', [DepositController::class, 'showDepositMade'])->name('deposit.made');
     Route::get('deposits/my-deposits', [DepositController::class, 'showMyDeposits'])->name('deposit.myDeposits');
     Route::resource('/share', ShareController::class);
+    // Additional routes for specific shares
+    Route::get('shares/made', [ShareController::class, 'showShareMade'])->name('share.made');
+    Route::get('shares/my-shares', [ShareController::class, 'showMyShares'])->name('share.myShares');
     Route::resource('/log', AuditTrailController::class);
 });
 

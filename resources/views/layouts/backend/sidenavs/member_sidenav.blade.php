@@ -35,6 +35,6 @@
 <div class="collapse" id="share" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{route('share.create')}}"><i class="fas fa-plus"> </i> Add Share</a>
-        <a class="nav-link" href="{{route('share.index')}}"><i class="fas fa-columns"> </i> My Shares</a>
+        <a class="nav-link" href="{{route('share.myShares')}}"><i class="fas fa-columns"> </i> My Shares</a>
     </nav>
 </div>
