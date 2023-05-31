@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Models\AuditTrail;
 
 class RoleController extends Controller
 {
@@ -37,11 +38,16 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required', 
+            'name' => ['required','string','min:3','unique:roles'] 
         ]);
 
         Role::create([
             'name' => ucfirst($request->name),
+        ]);
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Create Role',
         ]);
 
         return redirect(route('role.index'));
@@ -79,11 +85,16 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $this->validate($request, [        
-            'name' => 'required', 
+            'name' => ['required', 'string', 'min:3']
         ]);
 
         $role->update([
             'name' => ucfirst($request->name),
+        ]);
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Role Updated',
         ]);
 
         return redirect(route('role.index'));
@@ -98,6 +109,10 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Role Deleted',
+        ]);
         return redirect(route('role.index'));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\AuditTrail;
 
 class MemberController extends Controller
 {
@@ -65,6 +66,11 @@ class MemberController extends Controller
             ]);
         }
 
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Member Creation',
+        ]);
+
         return redirect(route('member.index')); 
     }
 
@@ -99,7 +105,16 @@ class MemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        User::find($member->user_id)->update([
+            'ban' => $member->users->ban ? 0 : 1,
+        ]);
+
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => $member->users->ban ? 'Member Unbanned' : 'Member Banned',
+        ]);
+
+        return redirect(route('member.index'));
     }
 
     /**
@@ -110,9 +125,12 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        
         $member->delete();
         User::find($member->user_id)->delete();
+        AuditTrail::create([
+            'user_id' => auth()->user()->id,
+            'action' => 'Member Removed',
+        ]);
         return redirect(route('member.index'));
     }
 
@@ -132,5 +150,5 @@ class MemberController extends Controller
             return 'SACCOS-'.$padder. $id;
         }
         return 'SACCOS-'.$id;
-}
+    }
 }
