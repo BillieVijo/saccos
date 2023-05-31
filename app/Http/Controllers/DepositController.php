@@ -23,7 +23,7 @@ class DepositController extends Controller
 
     public function showDepositMade()
     {
-        $deposits = Deposit::where('status', 'REQUESTED')->get();
+        $deposits = Deposit::where('status', 'ON-PROGRESS')->get();
         return view('backend.deposit.requested', compact('deposits'));
     }
 
@@ -54,7 +54,7 @@ class DepositController extends Controller
         Deposit::create([
             'amount' => $request->amount,
             'member_id' => auth()->user()->id,
-            'status' => 'REQUESTED'
+            'status' => 'ON-PROGRESS'
         ]);
 
         AuditTrail::create([
@@ -62,7 +62,7 @@ class DepositController extends Controller
             'action' => 'Make Deposit request of '.$request->amount.' TSH',
         ]);
 
-        return redirect(route('deposit.index'));
+        return redirect(route('deposit.myDeposits'));
     }
 
     /**

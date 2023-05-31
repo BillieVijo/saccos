@@ -23,7 +23,7 @@ class LoanController extends Controller
 
     public function showRequested()
     {
-        $loans = Loan::where('status', 'REQUESTED')->get();
+        $loans = Loan::where('status', 'ON-PROGRESS')->get();
         return view('backend.loan.requested', compact('loans'));
     }
 
@@ -55,7 +55,7 @@ class LoanController extends Controller
         Loan::create([
             'amount' => $request->amount,
             'member_id' => auth()->user()->id,
-            'status' => 'REQUESTED'
+            'status' => 'ON-PROGRESS'
         ]);
         
         AuditTrail::create([
@@ -63,7 +63,7 @@ class LoanController extends Controller
             'action' => 'Request Loan of '.$request->amount.' TSH',
         ]);
 
-        return redirect(route('loan.index'));
+        return redirect(route('loan.myLoans'));
     }
 
     /**
