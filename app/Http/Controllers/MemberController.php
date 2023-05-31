@@ -6,7 +6,8 @@ use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\AuditTrail;
-
+use App\Exports\MembersExport;
+use Maatwebsite\Excel\Facades\Excel;
 class MemberController extends Controller
 {
     /**
@@ -18,6 +19,11 @@ class MemberController extends Controller
     {
         $members = Member::get();
         return view('backend.member.index',compact('members'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new MembersExport, 'members.xlsx');
     }
 
     /**

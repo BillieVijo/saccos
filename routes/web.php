@@ -8,6 +8,7 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\AuditTrailController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,13 @@ Route::middleware('auth')->group(function () {
     Route::get('shares/made', [ShareController::class, 'showShareMade'])->name('share.made');
     Route::get('shares/my-shares', [ShareController::class, 'showMyShares'])->name('share.myShares');
     Route::resource('/log', AuditTrailController::class);
+
+    // report routes
+    Route::get('/contribution-report', [ReportController::class,'contributionReport'])->name('contribution.report');
+    Route::get('/loan-report', [ReportController::class,'loanReport'])->name('loan.report');
+
+    Route::get('/deposit/export/file', [ReportController::class, 'exportDeposit'])->name('deposit.export');
+    Route::get('/loan/export/file', [ReportController::class, 'exportLoan'])->name('loan.export');
 });
 
 require __DIR__.'/auth.php';
